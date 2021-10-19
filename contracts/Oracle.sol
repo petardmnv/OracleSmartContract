@@ -6,8 +6,6 @@ contract Oracle {
 	uint64 private id = 0;
 	// uint256 win = bet + ((bet/your_team_bets) * other_team_bets);
 	address private owner;
-	address private oracleAddress = 0xAE9c3fAD07115f7cc0ca53CEEA4f137e6e923729;
-
 	uint256 minimumBet = 1000000000000000000;
 
 
@@ -29,19 +27,15 @@ contract Oracle {
 	mapping(address => Player) public playerInfo;
 
 
-	uint256 public currentOraclePrice = 0;
+	uint256 public currentOraclePrice = 110;
 
 	constructor() {
 		owner = msg.sender;
 	}
+	function getCurrentOraclePrice() public view returns(uint256) { return currentOraclePrice; }
 
 	modifier ownable() {
         require(owner == msg.sender);
-        _;
-    }
-
-	modifier oracleable() {
-        require(oracleAddress == msg.sender);
         _;
     }
 	function createTeam(bytes32 _name, bytes32 _description, uint256 _target) public ownable returns(bool){
@@ -49,10 +43,9 @@ contract Oracle {
 		id +=1;
 		return true;
 	}
-	function getOraclePrice(uint256 _price) public payable oracleable returns(bool){
-		_price = uint(bytes32(msg.data));
-		currentOraclePrice = _price;
-		return true;
+	function getOraclePrice(string memory _price) public pure returns(string memory){
+		//currentOraclePrice = _price;
+		return _price;
 	}
 	function bet() public payable returns(bool){
 		return true;
